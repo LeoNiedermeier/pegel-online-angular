@@ -10,6 +10,9 @@ import 'rxjs/add/operator/switchMap';
 export class StationsTableComponent implements OnInit {
 
   stations: Station[] = [];
+
+  water: String = '';
+
   constructor(private pegelOnlineService: PegelOnlineService, private route: ActivatedRoute) {
   }
 
@@ -18,8 +21,10 @@ export class StationsTableComponent implements OnInit {
       const water = params['water'];
       console.log('WATER: ' + water);
       if (water == null) {
+        this.water = null;
         return this.pegelOnlineService.getStations();
       } else {
+        this.water = water;
         return this.pegelOnlineService.getStationsForWater(water);
       }
     }).subscribe(s => this.stations = s);

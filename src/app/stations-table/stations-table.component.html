@@ -1,21 +1,29 @@
 
-<h3>Stations</h3>
+<!--  center heading and add some padding top and bottom  -->
+<h3 *ngIf="water" class="pt-5 pb-5 text-center">Pegel für {{water}}</h3>
 
 <table class="table  table-striped  table-hover  table-sm">
     <thead class="thead-default">
         <tr>
             <th>#</th>
-            <th>Short Name</th>
-            <th>Long Name</th>
-            <th>km</th>
+            <th>Name</th>
+            <th>Gewässer</th>
+            <th>Flusskilomenter</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         <tr class="" *ngFor="let station of stations; let i = index">
             <th scope="row">{{i}}</th>
-            <td>{{station.shortname}}</td>
             <td>{{station.longname}}</td>
+            <td>{{station.water.longname}}</td>
             <td>{{station.km}}</td>
+            <td>
+                <button type="button" class="btn btn-info btn-sm" [routerLink]="['/station','level',station.shortname]">Pegel</button>
+                <!-- 
+            
+             -->
+            </td>
         </tr>
     </tbody>
 </table>

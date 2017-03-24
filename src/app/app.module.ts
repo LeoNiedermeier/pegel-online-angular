@@ -9,13 +9,16 @@ import { PegelOnlineService } from './pegel-online/pegel-online.service';
 import { StationsTableComponent } from './stations-table/stations-table.component';
 import { WatersTableComponent } from './waters-table/waters-table.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { WaterLevelComponent } from './water-level/water-level.component';
+import { LOCALE_ID } from '@angular/core';
 
 @NgModule({
   declarations: [
     AppComponent,
     WatersTableComponent,
     StationsTableComponent,
-    DashboardComponent
+    DashboardComponent,
+    WaterLevelComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +26,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HttpModule,
     AppRoutingModule
   ],
-  providers: [PegelOnlineService],
+  providers: [PegelOnlineService,
+    // set the locale: used e.g for date formatting
+    { provide: LOCALE_ID, useValue: "de-DE" }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,18 @@
+<h3>Pegel</h3>
+
+<table class="table  table-striped table-hover table-sm">
+    <thead class="thead-default">
+        <tr>
+            <th>Datum</th>
+            <th>Pegel (cm)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let level of waterLevels">
+            <!-- https://angular.io/docs/ts/latest/api/common/index/DatePipe-pipe.html -->
+            <td>{{level.timestamp | date:'medium'}}</td>
+            <td>{{level.value}}
+        </tr>
+    </tbody>
+
+</table>
