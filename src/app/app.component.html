@@ -1,0 +1,26 @@
+
+
+<!--  navigation from https://v4-alpha.getbootstrap.com/components/navbar/ -->
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+    <a class="navbar-brand" href="#">Pegel Online Angular</a>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" routerLink="" routerLinkActive="">
+                Home
+                <span class="sr-only">(current)</span>
+            </a>
+            <!-- The routerLink are static, no binding! -->
+            <a class="nav-item nav-link" routerLink="stations" routerLinkActive="active">Stations</a>
+            <a class="nav-item nav-link" routerLink="waters" routerLinkActive="active">Waters</a>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
