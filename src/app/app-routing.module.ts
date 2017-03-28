@@ -1,10 +1,12 @@
 import { WaterLevelResolver } from './water-level/water-level-resolver.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { Message } from './message-service/message';
+import { MessageService } from './message-service/message.service';
 import { StationsTableComponent } from './stations-table/stations-table.component';
 import { WaterLevelComponent } from './water-level/water-level.component';
 import { WatersTableComponent } from './waters-table/waters-table.component';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, Router, NavigationStart } from '@angular/router';
 
 /*
 * Simple routing module compare https://angular.io/docs/ts/latest/tutorial/toh-pt5.html
@@ -25,4 +27,14 @@ const routes: Routes = [
   providers: [WaterLevelResolver]
 })
 export class AppRoutingModule {
+
+  constructor(messageService: MessageService, router: Router) {
+    router.events.subscribe(event => {
+      // clear the message panel on "page change"
+      if (event instanceof NavigationStart) {
+        messageService.publish(Message.clear());
+      }
+    });
+  }
 }
+

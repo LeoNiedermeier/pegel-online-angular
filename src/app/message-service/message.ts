@@ -12,6 +12,13 @@ export class Message {
   }
 
   /**
+   * Creates a Message of type ERROR.
+   */
+  static info(text: String): Message {
+    return new Message(MessageType.INFO, text);
+  }
+
+  /**
    * Creates a Message of type CLEAR.
    */
   static clear(): Message {

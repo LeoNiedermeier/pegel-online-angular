@@ -13,6 +13,7 @@ import { WatersTableComponent } from './waters-table/waters-table.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { WaterLevelComponent } from './water-level/water-level.component';
 import { LOCALE_ID } from '@angular/core';
+import { NavigationLoadingOverlayComponent } from './navigation-loading-overlay/navigation-loading-overlay.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { LOCALE_ID } from '@angular/core';
     StationsTableComponent,
     DashboardComponent,
     WaterLevelComponent,
-    MessageComponent
+    MessageComponent,
+    NavigationLoadingOverlayComponent
   ],
   imports: [
     BrowserModule,
