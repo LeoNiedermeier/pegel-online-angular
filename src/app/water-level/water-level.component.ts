@@ -13,12 +13,18 @@ export class WaterLevelComponent implements OnInit {
   constructor(private pegelOnlineService: PegelOnlineService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    // use the resolved data
+    this.route.data.subscribe((data: { waterLevels: WaterLevel[] }) => this.waterLevels = data.waterLevels);
 
-    this.route.params.switchMap(
-      (params: Params) => {
-        const stationShortName = params['stationShortName'];
-        return this.pegelOnlineService.getWaterLevels(stationShortName);
+    /*
+        this.route.params.switchMap(
+          (params: Params) => {
+            const stationShortName = params['stationShortName'];
+            return this.pegelOnlineService.getWaterLevels(stationShortName);
+          }
+        ).subscribe(l => this.waterLevels = l);
       }
-    ).subscribe(l => this.waterLevels = l);
+      */
   }
 }
+

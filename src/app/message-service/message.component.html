@@ -1,0 +1,10 @@
+<div *ngFor="let message of messages">
+    <div [ngSwitch]="message.type">
+        <div *ngSwitchCase="messageType.ERROR">
+            <div class="alert alert-danger">{{message.text}}</div>
+        </div>
+        <div *ngSwitchDefault>
+            <div class="alert alert-info">{{message.text}}</div>
+        </div>
+    </div>
+</div>

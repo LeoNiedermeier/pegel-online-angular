@@ -1,3 +1,5 @@
+import { MessageService } from './message-service/message.service';
+import { MessageComponent } from './message-service/message-component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -18,7 +20,8 @@ import { LOCALE_ID } from '@angular/core';
     WatersTableComponent,
     StationsTableComponent,
     DashboardComponent,
-    WaterLevelComponent
+    WaterLevelComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,
@@ -27,8 +30,9 @@ import { LOCALE_ID } from '@angular/core';
     AppRoutingModule
   ],
   providers: [PegelOnlineService,
+   MessageService,
     // set the locale: used e.g for date formatting
-    { provide: LOCALE_ID, useValue: "de-DE" }],
+    { provide: LOCALE_ID, useValue: 'de-DE' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

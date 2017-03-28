@@ -15,7 +15,7 @@
             <!-- view the stations for the water -->
             <!-- the routerlink adds a query paramter (by {} literal) like /stations;water=abc  -->
             <td>
-                <button type="button" class="btn btn-info  btn-sm" [routerLink]="['/stations', { 'water': water.shortname}]">Messstellen</button>
+                <a class="btn btn-info btn-sm" [routerLink]="['/stations', { 'water': water.shortname}]">Messstellen</a>
             </td>
         </tr>
     </tbody>
