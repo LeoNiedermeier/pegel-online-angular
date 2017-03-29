@@ -1,10 +1,11 @@
-import { Message } from '../message-service/message';
-import { MessageService } from '../message-service/message.service';
+import { Message } from '../../core/message/message';
+import { MessageService } from '../../core/message/message.service';
+import { WaterLevel, PegelOnlineService } from '../shared/pegel-online.service';
 import { Observable } from 'rxjs/Rx';
-import { PegelOnlineService, Water, WaterLevel } from './../pegel-online/pegel-online.service';
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, Resolve, Params } from '@angular/router';
 import 'rxjs/add/operator/catch';
+
 
 
 @Injectable()

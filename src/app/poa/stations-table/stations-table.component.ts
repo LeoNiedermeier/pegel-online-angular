@@ -1,4 +1,4 @@
-import { PegelOnlineService, Station } from '../pegel-online/pegel-online.service';
+import { Station, PegelOnlineService } from '../shared/pegel-online.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';

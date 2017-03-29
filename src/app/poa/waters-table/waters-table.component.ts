@@ -1,4 +1,4 @@
-import { Water, PegelOnlineService } from '../pegel-online/pegel-online.service';
+import { PegelOnlineService, Water } from '../shared/pegel-online.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

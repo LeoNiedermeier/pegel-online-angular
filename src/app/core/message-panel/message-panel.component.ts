@@ -1,12 +1,12 @@
-import { MessageService } from './message.service';
-import { Message, MessageType } from './message';
+import { Message, MessageType } from '../message/message';
+import { MessageService } from '../message/message.service';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'poa-messages',
-  templateUrl: './message.component.html'
+  templateUrl: './message-panel.component.html'
 })
-export class MessageComponent {
+export class MessagePanelComponent {
 
   // Template can only access elements from the component. Access to other elements is not possible.
   // Therefore we have to add a property in order to access the enum:

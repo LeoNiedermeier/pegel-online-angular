@@ -12,7 +12,7 @@ export class Message {
   }
 
   /**
-   * Creates a Message of type ERROR.
+   * Creates a Message of type INFO.
    */
   static info(text: String): Message {
     return new Message(MessageType.INFO, text);
@@ -25,7 +25,7 @@ export class Message {
     return new Message(MessageType.CLEAR, '');
   }
 
-  constructor(public type: MessageType, public text: String) {
+  constructor(readonly type: MessageType, readonly  text: String) {
   }
 }
 

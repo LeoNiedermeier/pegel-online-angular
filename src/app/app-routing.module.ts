@@ -1,10 +1,11 @@
-import { WaterLevelResolver } from './water-level/water-level-resolver.service';
+import { Message } from './core/message/message';
+import { MessageService } from './core/message/message.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { Message } from './message-service/message';
-import { MessageService } from './message-service/message.service';
-import { StationsTableComponent } from './stations-table/stations-table.component';
-import { WaterLevelComponent } from './water-level/water-level.component';
-import { WatersTableComponent } from './waters-table/waters-table.component';
+import { StationsTableComponent } from './poa/stations-table/stations-table.component';
+import { WaterLevelResolver } from './poa/water-level/water-level-resolver.service';
+import { WaterLevelComponent } from './poa/water-level/water-level.component';
+import { WatersTableComponent } from './poa/waters-table/waters-table.component';
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, Router, NavigationStart } from '@angular/router';
 
