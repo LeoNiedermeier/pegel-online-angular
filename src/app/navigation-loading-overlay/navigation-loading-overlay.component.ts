@@ -4,26 +4,20 @@ import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, Naviga
 @Component({
   selector: 'poa-navigation-loading-overlay',
   // inline template with multiline string
-  template: `<div *ngIf="loading" class="overlay justify-content-center align-items-center">
-                  <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+  // Spinner in overlay with bootstrap 4 and font awesome
+  // the background: rgba(0,0,0,0.5); prohibits inheritance of opacity to spinner
+  template: `<div *ngIf="loading" class="modal-content modal-backdrop justify-content-center align-items-center w-100 h-100" 
+                                  style="background: rgba(0,0,0,0.5);">
+                  <i class="fa fa-spinner fa-spin fa-3x fa-fw text-white"></i>
                   <span class="sr-only">Loading...</span>
              </div>`,
-  // inline style with multiline string
-  styles: [`.overlay { position: fixed;
-                       display: flex;
-                       top: 0;
-                       left: 0;
-                       width: 100%;
-                       height: 100%;
-                       z-index: 1050;
-                       background-color: rgba(0, 0, 0, 0.3); }`]
 })
 export class NavigationLoadingOverlayComponent {
 
   // Sets initial value to true to show loading spinner on first load
   loading = true;
 
-  constructor(private router: Router) {
+  constructor(router: Router) {
     router.events.subscribe((event: Event) => {
       this.navigationInterceptor(event);
     });
@@ -40,6 +34,6 @@ export class NavigationLoadingOverlayComponent {
     if (event instanceof NavigationEnd || event instanceof NavigationCancel || event instanceof NavigationError) {
       this.loading = false;
     }
-    // the RoutesRecognized does nothing
+    // the RoutesRecognized event does nothing
   }
 }
