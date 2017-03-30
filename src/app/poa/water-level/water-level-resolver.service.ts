@@ -1,6 +1,7 @@
 import { Message } from '../../core/message/message';
 import { MessageService } from '../../core/message/message.service';
-import { WaterLevel, PegelOnlineService } from '../shared/pegel-online.service';
+import { PegelOnlineService } from '../shared/pegel-online.service';
+import { WaterLevel } from '../shared/waterlevel.model';
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, Resolve, Params } from '@angular/router';

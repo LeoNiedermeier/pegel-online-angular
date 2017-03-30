@@ -1,4 +1,5 @@
-import { WaterLevel, PegelOnlineService } from '../shared/pegel-online.service';
+import { PegelOnlineService } from '../shared/pegel-online.service';
+import { WaterLevel } from '../shared/waterlevel.model';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';

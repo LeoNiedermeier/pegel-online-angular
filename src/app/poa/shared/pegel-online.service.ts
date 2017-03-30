@@ -4,6 +4,10 @@ import 'rxjs/add/operator/publishReplay';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
+import { Station } from './station.model';
+import { Water } from './water.model';
+import { WaterLevel } from './waterlevel.model';
+
 @Injectable()
 // currently no error handling.
 // TODO: Stations and waters cacheable
@@ -55,27 +59,4 @@ export class PegelOnlineService {
     return this.http.get(this.baseUrl + `stations/${station}/W/measurements.json`)
       .map(r => r.json() as WaterLevel[]);
   }
-}
-
-export class Station {
-
-  uuid: string;
-  'number': number;
-  shortname: string;
-  longname: string;
-  km: number;
-  agency: string;
-  longitude: number;
-  latitude: number;
-  water: Water;
-}
-
-export class Water {
-  shortname: string;
-  longname: string;
-}
-
-export class WaterLevel {
-  timestamp: Date;
-  value: number;
 }
