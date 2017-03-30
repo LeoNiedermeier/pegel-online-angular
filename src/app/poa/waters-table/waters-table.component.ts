@@ -1,61 +1,35 @@
+import { PaginationDataService } from '../../shared/paginator/pagination-data.service';
 import { PegelOnlineService } from '../shared/pegel-online.service';
 import { Water } from '../shared/water.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   selector: 'poa-waters-table',
-  templateUrl: './waters-table.component.html'
+  templateUrl: './waters-table.component.html',
+  providers: [PaginationDataService]
 })
-export class WatersTableComponent implements OnInit {
+export class WatersTableComponent implements OnInit, OnDestroy {
+
   waters: Water[] = [];
 
-  private linesPerPage = 10;
+  private subscription: Subscription;
 
-  currentPage = 0;
-
-  private data: Water[] = [];
-
-  constructor(private route: ActivatedRoute) {
-
+  constructor(private route: ActivatedRoute, private paginationDataService: PaginationDataService) {
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { waters: Water[] }) => { this.data = data.waters; this.currentPage = 0; this.recalculatePages(); });
-  }
+    this.subscription = this.paginationDataService.subListProvider.subscribe(w => this.waters = w);
 
-  public nextPage(): void {
-    if (this.hasNextPage()) {
-      this.currentPage++;
-      this.recalculatePages();
-    }
-  }
-
-  public previousPage(): void {
-    if (this.hasPreviousPage) {
-      this.currentPage--;
-      this.recalculatePages();
-    }
+    // TODO
+    this.paginationDataService.onReady =
+      () => this.route.data.subscribe((data: { waters: Water[] }) => this.paginationDataService.dataConsumer.next(data.waters));
   }
 
 
-
-  private recalculatePages() {
-    this.waters = this.data.slice(this.currentPage * this.linesPerPage, (this.currentPage + 1) * this.linesPerPage);
-  }
-
-  hasNextPage(): boolean {
-    return (this.currentPage + 1) * this.linesPerPage < this.data.length;
-  }
-
-  hasPreviousPage(): boolean {
-    return this.currentPage > 0;
-  }
-
-  gotoPage(page: number): void {
-    if (page > 0 && (page + 1) * this.linesPerPage < this.data.length) {
-      this.currentPage = page;
-      this.recalculatePages();
-    }
+  ngOnDestroy() {
+    // prevent memory leak when component destroyed
+    this.subscription.unsubscribe();
   }
 }

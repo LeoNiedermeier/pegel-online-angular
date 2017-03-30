@@ -1,3 +1,4 @@
+import { PaginatorComponent } from '../shared/paginator/paginator.component';
 import { PegelOnlineService } from './shared/pegel-online.service';
 import { StationsTableComponent } from './stations-table/stations-table.component';
 import { WaterLevelComponent } from './water-level/water-level.component';
@@ -13,6 +14,7 @@ import { RouterModule } from '@angular/router';
     WatersTableComponent,
     StationsTableComponent,
     WaterLevelComponent,
+    PaginatorComponent
   ],
   imports: [RouterModule,
     BrowserModule,
