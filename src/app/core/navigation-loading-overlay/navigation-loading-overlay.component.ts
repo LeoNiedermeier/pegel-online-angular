@@ -36,7 +36,7 @@ export class NavigationLoadingOverlayComponent {
         if (this.counter > 0 && !this.loading) {
           this.loading = true;
         }
-      }, 50);
+      }, 100);
 
       // Note: use "=>": it is a function expression! Not direct use of the checkAndSetLoading method.
       // setTimeout(() => this.checkAndSetLoading(), 100);

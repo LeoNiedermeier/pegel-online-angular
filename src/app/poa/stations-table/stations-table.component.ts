@@ -1,4 +1,3 @@
-import { PegelOnlineService } from '../shared/pegel-online.service';
 import { Station } from '../shared/station.model';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -14,20 +13,22 @@ export class StationsTableComponent implements OnInit {
 
   water: String = '';
 
-  constructor(private pegelOnlineService: PegelOnlineService, private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.route.params.switchMap((params: Params) => {
-      const water = params['water'];
-      console.log('WATER: ' + water);
-      if (water == null) {
-        this.water = null;
-        return this.pegelOnlineService.getStations();
-      } else {
-        this.water = water;
-        return this.pegelOnlineService.getStationsForWater(water);
-      }
-    }).subscribe(s => this.stations = s);
+    this.route.data.subscribe((data: { stations: Station[] }) => this.stations = data.stations);
+
+    //    this.route.params.switchMap((params: Params) => {
+    //      const water = params['water'];
+    //      console.log('WATER: ' + water);
+    //      if (water == null) {
+    //        this.water = null;
+    //        return this.pegelOnlineService.getStations();
+    //      } else {
+    //        this.water = water;
+    //        return this.pegelOnlineService.getStationsForWater(water);
+    //      }
+    //    }).subscribe(s => this.stations = s);
   }
 }

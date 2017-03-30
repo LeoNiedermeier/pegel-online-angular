@@ -1,6 +1,7 @@
 import { PegelOnlineService } from '../shared/pegel-online.service';
 import { Water } from '../shared/water.model';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'poa-waters-table',
@@ -9,15 +10,11 @@ import { Component, OnInit } from '@angular/core';
 export class WatersTableComponent implements OnInit {
   waters: Water[] = [];
 
-  constructor(private pegelOnlineService: PegelOnlineService) {
+  constructor(private route: ActivatedRoute) {
 
   }
 
   ngOnInit() {
-    this.pegelOnlineService.getWaters().subscribe(w => this.waters = w);
-  }
-
-  public showStations(water: Water): void {
-
+    this.route.data.subscribe((data: { waters: Water[] }) => this.waters = data.waters);
   }
 }

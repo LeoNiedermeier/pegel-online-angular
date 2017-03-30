@@ -1,4 +1,3 @@
-import { PegelOnlineService } from '../shared/pegel-online.service';
 import { WaterLevel } from '../shared/waterlevel.model';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -11,7 +10,7 @@ import 'rxjs/add/operator/switchMap';
 export class WaterLevelComponent implements OnInit {
 
   waterLevels: WaterLevel[] = [];
-  constructor(private pegelOnlineService: PegelOnlineService, private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     // use the resolved data
