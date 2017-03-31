@@ -1,35 +1,27 @@
 import { PaginationDataService } from '../../shared/paginator/pagination-data.service';
 import { PegelOnlineService } from '../shared/pegel-online.service';
 import { Water } from '../shared/water.model';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription, Subject } from 'rxjs/Rx';
 
 @Component({
   selector: 'poa-waters-table',
   templateUrl: './waters-table.component.html',
   providers: [PaginationDataService]
 })
-export class WatersTableComponent implements OnInit, OnDestroy {
+export class WatersTableComponent {
 
   waters: Water[] = [];
 
-  private subscription: Subscription;
 
-  constructor(private route: ActivatedRoute, private paginationDataService: PaginationDataService) {
-  }
-
-  ngOnInit() {
-    this.subscription = this.paginationDataService.subListProvider.subscribe(w => this.waters = w);
-
-    // TODO
-    this.paginationDataService.onReady =
-      () => this.route.data.subscribe((data: { waters: Water[] }) => this.paginationDataService.dataConsumer.next(data.waters));
-  }
-
-
-  ngOnDestroy() {
-    // prevent memory leak when component destroyed
-    this.subscription.unsubscribe();
+  constructor(route: ActivatedRoute, paginationDataService: PaginationDataService<Water>) {
+    paginationDataService.onReady =
+      (inputDataConsumer: Subject<Water[]>, subListProvider: Subject<Water[]>) => {
+        // "fetch" data from pagination
+        subListProvider.subscribe(w => this.waters = w);
+        // push the data to the pagination
+        route.data.subscribe((data: { waters: Water[] }) => inputDataConsumer.next(data.waters));
+      };
   }
 }

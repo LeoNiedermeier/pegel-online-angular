@@ -1,29 +1,34 @@
 import { PaginationDataService } from './pagination-data.service';
-import { Component, OnInit, Injectable, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injectable, OnDestroy, Input } from '@angular/core';
 import { Subject, Subscription } from 'rxjs/Rx';
 
 @Component({
   selector: 'poa-paginator',
   templateUrl: './paginator.component.html'
 })
-export class PaginatorComponent implements OnInit, OnDestroy {
+export class PaginatorComponent<T> implements OnInit {
 
-  private linesPerPage = 10;
+  /**
+   * Can be set via attribute in element. If not, default (10) is used.
+   */
+  @Input() linesPerPage = 10;
 
   currentPage = 0;
 
-  private data: any[] = [];
+  private data: T[] = [];
 
-  private subscription; Subscription;
+  private readonly inputDataConsumer = new Subject<T[]>();
 
-  constructor(private paginationService: PaginationDataService) {
+  private readonly subListProvider = new Subject<T[]>();
+
+  constructor(private paginationService: PaginationDataService<T>) {
   }
 
   ngOnInit() {
-    this.subscription = this.paginationService.dataConsumer
+    this.inputDataConsumer
       .subscribe(d => { this.currentPage = 0; this.data = d; this.recalculatePages(); });
     if (this.paginationService.onReady) {
-      this.paginationService.onReady();
+      this.paginationService.onReady(this.inputDataConsumer, this.subListProvider);
     }
   }
 
@@ -45,7 +50,7 @@ export class PaginatorComponent implements OnInit, OnDestroy {
 
   private recalculatePages() {
     const waters = this.data.slice(this.currentPage * this.linesPerPage, (this.currentPage + 1) * this.linesPerPage);
-    this.paginationService.subListProvider.next(waters);
+    this.subListProvider.next(waters);
   }
 
   hasNextPage(): boolean {
@@ -61,10 +66,5 @@ export class PaginatorComponent implements OnInit, OnDestroy {
       this.currentPage = page;
       this.recalculatePages();
     }
-  }
-
-  ngOnDestroy() {
-    // prevent memory leak when component destroyed
-    this.subscription.unsubscribe();
   }
 }

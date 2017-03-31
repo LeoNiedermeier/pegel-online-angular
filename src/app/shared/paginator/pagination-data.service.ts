@@ -1,11 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Rx';
 @Injectable()
-export class PaginationDataService {
+export class PaginationDataService<T> {
 
-  readonly dataConsumer = new Subject<any[]>();
-
-  readonly subListProvider = new Subject<any[]>();
-
-  onReady: () => void;
+  onReady: (inputDataConsumer: Subject<T[]>, subListProvider: Subject<T[]>) => void;
 }
