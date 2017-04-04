@@ -8,13 +8,15 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { TableSorterComponent } from './shared/table-sorter/table-sorter.component';
 
 @NgModule({
   declarations: [
     WatersTableComponent,
     StationsTableComponent,
     WaterLevelComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    TableSorterComponent
   ],
   imports: [RouterModule,
     BrowserModule,

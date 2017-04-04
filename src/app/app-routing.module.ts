@@ -9,14 +9,14 @@ import { WatersResolver } from './poa/waters-table/waters-resolver.service';
 import { WatersTableComponent } from './poa/waters-table/waters-table.component';
 
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, Router, NavigationStart } from '@angular/router';
+import { Routes, RouterModule, Router, NavigationStart, ActivatedRouteSnapshot } from '@angular/router';
 
 /*
 * Simple routing module compare https://angular.io/docs/ts/latest/tutorial/toh-pt5.html
 */
 const routes: Routes = [
-  { path: 'waters', component: WatersTableComponent, resolve : { waters : WatersResolver} },
-  { path: 'stations', component: StationsTableComponent, resolve: {stations : StationsResolver} },
+  { path: 'waters', component: WatersTableComponent, resolve: { waters: WatersResolver } },
+  { path: 'stations', component: StationsTableComponent, resolve: { stations: StationsResolver } },
   // The station/level has a mandatory parameter, see https://angular.io/docs/ts/latest/guide/router.html#!#route-def-with-parameter
   // the data.waterLevels are resolved before entering the component
   { path: 'station/level/:stationShortName', component: WaterLevelComponent, resolve: { waterLevels: WaterLevelResolver } },

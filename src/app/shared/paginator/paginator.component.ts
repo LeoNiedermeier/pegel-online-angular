@@ -1,6 +1,6 @@
 import { PaginationDataService } from './pagination-data.service';
 import { Component, OnInit, Injectable, OnDestroy, Input } from '@angular/core';
-import { Subject, Subscription } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Rx';
 
 @Component({
   selector: 'poa-paginator',
@@ -9,11 +9,11 @@ import { Subject, Subscription } from 'rxjs/Rx';
 export class PaginatorComponent<T> implements OnInit {
 
   /**
-   * Can be set via attribute in element. If not, default (10) is used.
+   * Can be set via "linesPerPage" attribute in element. If not, default (10) is used.
    */
   @Input() linesPerPage = 10;
 
-  currentPage = 0;
+  private _currentPage = 1;
 
   private data: T[] = [];
 
@@ -24,9 +24,16 @@ export class PaginatorComponent<T> implements OnInit {
   constructor(private paginationService: PaginationDataService<T>) {
   }
 
+  get currentPage(): number {
+    return this._currentPage;
+  }
+
   ngOnInit() {
+    // The timing problem could be solved by a BehaviorSubject
     this.inputDataConsumer
-      .subscribe(d => { this.currentPage = 0; this.data = d; this.recalculatePages(); });
+      .subscribe(d => {
+        this._currentPage = 1; this.data = d; this.recalculatePages();
+      });
     if (this.paginationService.onReady) {
       this.paginationService.onReady(this.inputDataConsumer, this.subListProvider);
     }
@@ -34,14 +41,14 @@ export class PaginatorComponent<T> implements OnInit {
 
   public nextPage(): void {
     if (this.hasNextPage()) {
-      this.currentPage++;
+      this._currentPage++;
       this.recalculatePages();
     }
   }
 
   public previousPage(): void {
     if (this.hasPreviousPage) {
-      this.currentPage--;
+      this._currentPage--;
       this.recalculatePages();
     }
   }
@@ -49,21 +56,22 @@ export class PaginatorComponent<T> implements OnInit {
 
 
   private recalculatePages() {
-    const waters = this.data.slice(this.currentPage * this.linesPerPage, (this.currentPage + 1) * this.linesPerPage);
-    this.subListProvider.next(waters);
+    const page = this.data.slice((this._currentPage - 1) * this.linesPerPage, this._currentPage * this.linesPerPage);
+    this.subListProvider.next(page);
   }
 
   hasNextPage(): boolean {
-    return (this.currentPage + 1) * this.linesPerPage < this.data.length;
+    return (this._currentPage) * this.linesPerPage < this.data.length;
   }
 
   hasPreviousPage(): boolean {
-    return this.currentPage > 0;
+    return this._currentPage > 1;
   }
 
   gotoPage(page: number): void {
-    if (page > 0 && (page + 1) * this.linesPerPage < this.data.length) {
-      this.currentPage = page;
+    // pages up to this page filled with data: (page -1)* linesPerPage data elements available, therefore:
+    if (page > 0 && (page - 1) * this.linesPerPage < this.data.length) {
+      this._currentPage = page;
       this.recalculatePages();
     }
   }

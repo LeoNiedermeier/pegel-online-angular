@@ -1,27 +1,26 @@
 import { PaginationDataService } from '../../shared/paginator/pagination-data.service';
+import { BaseTableComponent } from '../shared/base-table.component';
 import { PegelOnlineService } from '../shared/pegel-online.service';
 import { Water } from '../shared/water.model';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, Subject } from 'rxjs/Rx';
+import { Subscription, Subject, Observable, BehaviorSubject } from 'rxjs/Rx';
 
 @Component({
   selector: 'poa-waters-table',
   templateUrl: './waters-table.component.html',
   providers: [PaginationDataService]
 })
-export class WatersTableComponent {
-
-  waters: Water[] = [];
-
+export class WatersTableComponent extends BaseTableComponent<Water> {
 
   constructor(route: ActivatedRoute, paginationDataService: PaginationDataService<Water>) {
-    paginationDataService.onReady =
-      (inputDataConsumer: Subject<Water[]>, subListProvider: Subject<Water[]>) => {
-        // "fetch" data from pagination
-        subListProvider.subscribe(w => this.waters = w);
-        // push the data to the pagination
-        route.data.subscribe((data: { waters: Water[] }) => inputDataConsumer.next(data.waters));
-      };
+    super(paginationDataService);
+
+    this.sortProperty = 'longname';
+
+    route.data.subscribe((data: { waters: Water[] }) => this.updateInputData(data.waters));
   }
+
+  // private readonly compareByShortname = (a: Water, b: Water) => a.shortname.localeCompare(b.shortname);
+
 }

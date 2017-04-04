@@ -15,8 +15,8 @@ export class StationsResolver extends BaseResolver<Station[]> {
 
   }
 
-  doResolve(route: ActivatedRouteSnapshot): Observable<Station[]> {
-    const water = route.params['water'];
+  doResolve(routeSnapshot: ActivatedRouteSnapshot): Observable<Station[]> {
+    const water = routeSnapshot.params['water'];
 
     // compare with null: == instead of ===
     return (water == null ? this.pegelOnlineService.getStations() : this.pegelOnlineService.getStationsForWater(water));

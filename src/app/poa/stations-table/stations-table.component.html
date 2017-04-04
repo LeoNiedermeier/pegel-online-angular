@@ -3,23 +3,31 @@
 
 <table class="table  table-striped table-hover table-sm">
     <thead class="thead-default">
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Gewässer</th>
-            <th>Flusskilomenter</th>
-            <th></th>
+        <tr class="row">
+        <!--  set the column width fixed. Has to be done also in the tbody area? -->
+            <th class="col-sm-5">
+                <poa-table-sorter property="longname">Name</poa-table-sorter>
+            </th>
+            <th class="col-sm-4">
+                <poa-table-sorter property="water.longname" initialActive="true">Gewässer</poa-table-sorter>
+            </th>
+            <th class="col-sm-2">
+                <poa-table-sorter property="km" initialActive="true">Flusskilomenter</poa-table-sorter>
+            </th>
+            <th class="col-sm-1"></th>
         </tr>
     </thead>
     <tbody>
-        <tr class="" *ngFor="let station of stations; let i = index">
-            <th scope="row">{{i}}</th>
-            <td>{{station.longname}}</td>
-            <td>{{station.water.longname}}</td>
-            <td>{{station.km}}</td>
-            <td>
-                <a class="btn btn-info btn-sm" [routerLink]="['/station','level',station.shortname]">Pegel</a>
+        <tr *ngFor="let station of data" class="row">
+            <td class="col-sm-5">{{station.longname}}</td>
+            <td class="col-sm-4">{{station.water.longname}}</td>
+            <td class="col-sm-2">{{station.km}}</td>
+            <td class="col-sm-1">
+                <a class="btn btn-info btn-sm pull-right" [routerLink]="['/station','level',station.shortname]">Pegel</a>
             </td>
         </tr>
     </tbody>
 </table>
+
+<!-- pass fixed value to linesPerPage: no binding necessary -->
+<poa-paginator linesPerPage="15"></poa-paginator>

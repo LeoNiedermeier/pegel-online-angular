@@ -10,6 +10,7 @@ export class MessagePanelComponent {
 
   // Template can only access elements from the component. Access to other elements is not possible.
   // Therefore we have to add a property in order to access the enum:
+  // TODO: document access to global namespace
   public readonly messageType = MessageType;
 
   public messages: Message[] = [];

@@ -1,4 +1,5 @@
-<div *ngFor="let message of messages">
+<!-- 
+ <div *ngFor="let message of messages">
     <div [ngSwitch]="message.type">
         <div *ngSwitchCase="messageType.ERROR">
             <div class="alert alert-danger">{{message.text}}</div>
@@ -6,5 +7,15 @@
         <div *ngSwitchDefault>
             <div class="alert alert-info">{{message.text}}</div>
         </div>
+    </div>
+</div>
+ -->
+
+<!--  same with class binding: -->
+<div *ngFor="let message of messages">
+    <!-- the default is a bit lengthy do formulate in the case if there are more message types -->
+    <div class="alert" [class.alert-danger]="message.type == messageType.ERROR"
+                       [class.alert-info]="message.type != messageType.ERROR">
+        {{message.text}}
     </div>
 </div>
