@@ -18,22 +18,21 @@ export class StationsTableComponent {
 
   data: Station[] = [];
 
+  private inputData: Station[] = [];
 
   private compareFunction: (a: Station, b: Station) => number;
 
-  private inputData: Station[] = [];
   // BehaviourSubject saves the last element
   private inputDataSubject = new BehaviorSubject<Station[]>([]);
 
-  constructor(private route: ActivatedRoute, paginationDataService: PaginationDataService<Station>,
+  constructor(route: ActivatedRoute, paginationDataService: PaginationDataService<Station>,
     eventService: TableSorterEventService) {
-
 
     // access to parameter via snapshot
     this.water = route.snapshot.params['water'];
 
     //  the only specific code, all other can be general.
-    route.data.subscribe((data: { stations: Station[], water: string }) => {
+    route.data.subscribe((data: { stations: Station[] }) => {
       // We do change the array, therefore copy it in other not change the original array
       this.inputData = data.stations.slice(0);
       this.sortInputData();
