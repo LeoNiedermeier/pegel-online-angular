@@ -53,13 +53,6 @@ export class PaginatorComponent<T> implements OnInit {
     }
   }
 
-
-
-  private recalculatePages() {
-    const page = this.data.slice((this._currentPage - 1) * this.linesPerPage, this._currentPage * this.linesPerPage);
-    this.subListProvider.next(page);
-  }
-
   hasNextPage(): boolean {
     return (this._currentPage) * this.linesPerPage < this.data.length;
   }
@@ -68,11 +61,20 @@ export class PaginatorComponent<T> implements OnInit {
     return this._currentPage > 1;
   }
 
+  hasMoreThanOnePage(): boolean {
+    return this.data.length / this.linesPerPage > 1;
+  }
+
   gotoPage(page: number): void {
     // pages up to this page filled with data: (page -1)* linesPerPage data elements available, therefore:
     if (page > 0 && (page - 1) * this.linesPerPage < this.data.length) {
       this._currentPage = page;
       this.recalculatePages();
     }
+  }
+
+  private recalculatePages() {
+    const page = this.data.slice((this._currentPage - 1) * this.linesPerPage, this._currentPage * this.linesPerPage);
+    this.subListProvider.next(page);
   }
 }

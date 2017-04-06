@@ -7,6 +7,7 @@ import { Http } from '@angular/http';
 import { Station } from './station.model';
 import { Water } from './water.model';
 import { WaterLevel } from './waterlevel.model';
+import { Duration } from 'moment';
 
 @Injectable()
 // currently no error handling.
@@ -54,9 +55,13 @@ export class PegelOnlineService {
     return this.waters;
   }
 
-  public getWaterLevels(station: String): Observable<WaterLevel[]> {
-    // http://www.pegelonline.wsv.de/webservices/rest-api/v2/stations/BONN/W/measurements.json
-    return this.http.get(this.baseUrl + `stations/${station}/W/measurements.json`)
-      .map(r => r.json() as WaterLevel[]);
+  public getWaterLevels(station: String, duration?: Duration): Observable<WaterLevel[]> {
+    // Duration: http://momentjs.com/docs/#/durations/
+
+    let url = this.baseUrl + `stations/${station}/W/measurements.json`;
+    if (duration) {
+      url = url + '?start=' + duration.toISOString();
+    }
+    return this.http.get(url).map(r => r.json() as WaterLevel[]);
   }
 }

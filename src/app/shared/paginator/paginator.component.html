@@ -1,6 +1,8 @@
 <!-- https://github.com/angular/angular/issues/7294 : href="javascript:void(0);" -->
 <!--  https://v4-alpha.getbootstrap.com/components/pagination/ -->
-<nav aria-label="Page navigation example">
+
+<!-- no need for pagination if we have only one page -->
+<nav aria-label="Page navigation example" *ngIf="hasMoreThanOnePage()">
     <ul class="pagination">
         <li class="page-item" [class.disabled]="!hasPreviousPage()">
             <!-- role="button" make mouse cursor to a pointer -->
