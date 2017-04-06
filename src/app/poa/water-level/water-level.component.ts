@@ -1,30 +1,38 @@
-import { WaterLevel } from '../shared/waterlevel.model';
+import { Water } from './../shared/water.model';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
+import { ActivatedRoute, NavigationExtras, Params, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm, FormGroup, FormControl, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
-import { ActivatedRoute, Params, Router, NavigationExtras } from '@angular/router';
+import { TableSorterEventService } from '../shared/table-sorter/tabel-sorter-event.service';
+import { WaterLevel } from '../shared/waterlevel.model';
 import 'rxjs/add/operator/switchMap';
+
 
 @Component({
   selector: 'poa-water-level',
-  templateUrl: './water-level.component.html'
+  templateUrl: './water-level.component.html',
+  providers: [TableSorterEventService]
 })
-export class WaterLevelComponent implements OnInit {
-  private validationMessages = {
+export class WaterLevelComponent {
+  // Validation messages: ControlName : { messageKey : messageText, ....}
+  private static readonly validationMessages = {
     'days': {
-      'numberFormat': 'Zahl zwischen 0 un 99.',
+      'numberFormat': 'Tage: Zahl zwischen 0 un 99.',
     },
-    //    'hours': {
-    //      'numberFormat': 'Zahl zwischen 0 un 99.',
-    //    }
+    'hours': {
+      'numberFormat': 'Stunden: Zahl zwischen 0 un 99.',
+    }
   };
 
-  formErrors = {};
+  // format: { controleName : [messages,...], ...}
+  formErrors = { days: null, hours: null };
+
+  faSearch = false;
 
   searchForm: FormGroup;
 
   waterLevels: WaterLevel[] = [];
-
-  static onValueChanged(form: FormGroup, formErrors: any, validationMessages: any) {
+  private compareFunction: (a: any, b: any) => number;
+  static onValueChanged (form: FormGroup, formErrors: any, validationMessages: any) {
     if (!form) { return; }
 
     // check only fields which have a validation message
@@ -35,33 +43,56 @@ export class WaterLevelComponent implements OnInit {
       if (control && control.dirty && !control.valid) {
         const messages = validationMessages[field];
         for (const key of Object.keys(control.errors)) {
-          formErrors[field] += messages[key] + ' ';
+          if (messages[key] != null) {
+            if (formErrors[field] == null) {
+              formErrors[field] = new Array();
+            }
+            (<string[]>formErrors[field]).push(messages[key]);
+          }
         }
       }
     }
   }
 
-  static validateNumberRange(): ValidatorFn {
+  static validateNumberRange (): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
       const n = parseFloat(control.value);
       return (control.value === '' || !isNaN(n) && n >= 0 && n <= 100) ? null : { 'numberFormat': { n } };
     };
   }
-  constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {
+  constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder,
+    tableSorterEventService: TableSorterEventService) {
     this.createForm();
+    // table sorting
+    tableSorterEventService.subscribe(e => {
+      this.compareFunction = e.compareFunction;
+      this.sortInputData();
+    });
+
+    this.route.data.subscribe((data: { waterLevels: WaterLevel[] }) => {
+      this.waterLevels = data.waterLevels;
+      this.sortInputData();
+    }
+    );
   }
 
-  private createForm() {
-    this.searchForm = this.fb.group({
+  private sortInputData (): void {
+    if (this.compareFunction != null) {
+      this.waterLevels.sort(this.compareFunction);
+    }
+  }
+
+  private createForm () {
+    this.searchForm = this.formBuilder.group({
       // FormControl: name : [initial value, validators]
       days: ['', [WaterLevelComponent.validateNumberRange()]],
-      hours: ''
+      hours: ['', [WaterLevelComponent.validateNumberRange()]]
     });
     this.searchForm.valueChanges
-      .subscribe(data => WaterLevelComponent.onValueChanged(this.searchForm, this.formErrors, this.validationMessages));
+      .subscribe(data => WaterLevelComponent.onValueChanged(this.searchForm, this.formErrors, WaterLevelComponent.validationMessages));
   }
 
-  onSubmit(): void {
+  onSubmit (): void {
     if (!this.searchForm.valid) {
       return;
     }
@@ -69,15 +100,10 @@ export class WaterLevelComponent implements OnInit {
     // use the same format like in [routerLink] directive.
     // DO NOT set the parameters as queryParams in  NavigationExtras (does not change route -> no call of resolver -> no data)
     this.router.navigate(['./',
-      //TODO: how to handle values?
+      // simple handling of form values:
       { days: this.searchForm.value.days, hours: this.searchForm.value.hours }],
       // should show same page, therefore relative to current and './' as path
       { relativeTo: this.route }
     );
-  }
-
-  ngOnInit() {
-    // use the resolved data
-    this.route.data.subscribe((data: { waterLevels: WaterLevel[] }) => this.waterLevels = data.waterLevels);
   }
 }

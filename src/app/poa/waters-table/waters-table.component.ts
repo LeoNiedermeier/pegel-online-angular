@@ -1,10 +1,10 @@
-import { PaginationDataService } from '../../shared/paginator/pagination-data.service';
+import { ActivatedRoute } from '@angular/router';
 import { BaseTableComponent } from '../shared/base-table.component';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs/Rx';
+import { Component, OnInit } from '@angular/core';
+import { PaginationDataService } from '../../shared/paginator/pagination-data.service';
 import { PegelOnlineService } from '../shared/pegel-online.service';
 import { Water } from '../shared/water.model';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription, Subject, Observable, BehaviorSubject } from 'rxjs/Rx';
 
 @Component({
   selector: 'poa-waters-table',
