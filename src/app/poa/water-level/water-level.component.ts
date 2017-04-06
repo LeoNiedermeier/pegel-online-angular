@@ -99,9 +99,18 @@ export class WaterLevelComponent {
 
     // use the same format like in [routerLink] directive.
     // DO NOT set the parameters as queryParams in  NavigationExtras (does not change route -> no call of resolver -> no data)
+
+    // simple handling of form values:
+    const params = {};
+    if (this.searchForm.value.days !== '') {
+      params['days'] = this.searchForm.value.days;
+    }
+    if (this.searchForm.value.hours !== '') {
+      params['hours'] = this.searchForm.value.hours;
+    }
+
     this.router.navigate(['./',
-      // simple handling of form values:
-      { days: this.searchForm.value.days, hours: this.searchForm.value.hours }],
+      params],
       // should show same page, therefore relative to current and './' as path
       { relativeTo: this.route }
     );

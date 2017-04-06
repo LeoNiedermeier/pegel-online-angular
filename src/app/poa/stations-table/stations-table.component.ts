@@ -1,10 +1,10 @@
-import { PaginationDataService } from '../../shared/paginator/pagination-data.service';
+import { ActivatedRoute, ActivatedRouteSnapshot, Params } from '@angular/router';
 import { BaseTableComponent } from '../shared/base-table.component';
+import { BehaviorSubject, Subject } from 'rxjs/Rx';
+import { Component, OnInit } from '@angular/core';
+import { PaginationDataService } from '../../shared/paginator/pagination-data.service';
 import { Station } from '../shared/station.model';
 import { TableSorterEventService } from '../shared/table-sorter/tabel-sorter-event.service';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, ActivatedRouteSnapshot } from '@angular/router';
-import { Subject, BehaviorSubject } from 'rxjs/Rx';
 import 'rxjs/add/operator/switchMap';
 
 @Component({

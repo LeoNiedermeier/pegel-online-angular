@@ -1,15 +1,15 @@
+import { ActivatedRouteSnapshot, NavigationStart, Router, RouterModule, Routes } from '@angular/router';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { Message } from './core/message/message';
 import { MessageService } from './core/message/message.service';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { NgModule } from '@angular/core';
 import { StationsResolver } from './poa/stations-table/stations-resolver.service';
 import { StationsTableComponent } from './poa/stations-table/stations-table.component';
-import { WaterLevelResolver } from './poa/water-level/water-level-resolver.service';
 import { WaterLevelComponent } from './poa/water-level/water-level.component';
+import { WaterLevelResolver } from './poa/water-level/water-level-resolver.service';
 import { WatersResolver } from './poa/waters-table/waters-resolver.service';
 import { WatersTableComponent } from './poa/waters-table/waters-table.component';
 
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule, Router, NavigationStart, ActivatedRouteSnapshot } from '@angular/router';
 
 /*
 * Simple routing module compare https://angular.io/docs/ts/latest/tutorial/toh-pt5.html
