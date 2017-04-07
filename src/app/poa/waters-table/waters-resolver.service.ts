@@ -18,3 +18,11 @@ export class WatersResolver extends BaseResolver<Water[]> {
     return this.pegelOnlineService.getWaters();
   }
 }
+
+// centralize configuration of resolver and resolved data structure
+// net to know in route configuration and in the component
+export const WATERS_RESOLVER = { waters: WatersResolver };
+
+export class WatersResolverResolvedData {
+  waters: Water[];
+}

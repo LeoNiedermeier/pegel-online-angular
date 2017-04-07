@@ -7,7 +7,7 @@ import { StationsResolver } from './poa/stations-table/stations-resolver.service
 import { StationsTableComponent } from './poa/stations-table/stations-table.component';
 import { WaterLevelComponent } from './poa/water-level/water-level.component';
 import { WaterLevelResolver } from './poa/water-level/water-level-resolver.service';
-import { WatersResolver } from './poa/waters-table/waters-resolver.service';
+import { WATERS_RESOLVER } from './poa/waters-table/waters-resolver.service';
 import { WatersTableComponent } from './poa/waters-table/waters-table.component';
 
 
@@ -15,7 +15,7 @@ import { WatersTableComponent } from './poa/waters-table/waters-table.component'
 * Simple routing module compare https://angular.io/docs/ts/latest/tutorial/toh-pt5.html
 */
 const routes: Routes = [
-  { path: 'waters', component: WatersTableComponent, resolve: { waters: WatersResolver } },
+  { path: 'waters', component: WatersTableComponent, resolve: WATERS_RESOLVER },
   { path: 'stations', component: StationsTableComponent, resolve: { stations: StationsResolver } },
   // The station/level has a mandatory parameter, see https://angular.io/docs/ts/latest/guide/router.html#!#route-def-with-parameter
   // the data.waterLevels are resolved before entering the component
@@ -27,7 +27,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [WaterLevelResolver, StationsResolver, WatersResolver]
+  providers: [WaterLevelResolver, StationsResolver, WATERS_RESOLVER.waters]
 })
 export class AppRoutingModule {
 

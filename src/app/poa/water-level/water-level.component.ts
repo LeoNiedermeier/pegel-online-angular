@@ -24,6 +24,7 @@ export class WaterLevelComponent {
   };
 
   // format: { controleName : [messages,...], ...}
+  // the fields are not really necessary, but useful for code complition
   formErrors = { days: null, hours: null };
 
   faSearch = false;
@@ -32,7 +33,7 @@ export class WaterLevelComponent {
 
   waterLevels: WaterLevel[] = [];
   private compareFunction: (a: any, b: any) => number;
-  static onValueChanged (form: FormGroup, formErrors: any, validationMessages: any) {
+  static onValueChanged(form: FormGroup, formErrors: any, validationMessages: any) {
     if (!form) { return; }
 
     // check only fields which have a validation message
@@ -54,10 +55,11 @@ export class WaterLevelComponent {
     }
   }
 
-  static validateNumberRange (): ValidatorFn {
+  // example of custom validator:
+  static validateNumberRange(min: number, max: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
       const n = parseFloat(control.value);
-      return (control.value === '' || !isNaN(n) && n >= 0 && n <= 100) ? null : { 'numberFormat': { n } };
+      return (control.value === '' || !isNaN(n) && n >= min && n <= max) ? null : { 'numberFormat': { n } };
     };
   }
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder,
@@ -76,23 +78,23 @@ export class WaterLevelComponent {
     );
   }
 
-  private sortInputData (): void {
+  private sortInputData(): void {
     if (this.compareFunction != null) {
       this.waterLevels.sort(this.compareFunction);
     }
   }
 
-  private createForm () {
+  private createForm() {
     this.searchForm = this.formBuilder.group({
       // FormControl: name : [initial value, validators]
-      days: ['', [WaterLevelComponent.validateNumberRange()]],
-      hours: ['', [WaterLevelComponent.validateNumberRange()]]
+      days: ['', [WaterLevelComponent.validateNumberRange(0, 30)]],
+      hours: ['', [WaterLevelComponent.validateNumberRange(0, 24)]]
     });
     this.searchForm.valueChanges
       .subscribe(data => WaterLevelComponent.onValueChanged(this.searchForm, this.formErrors, WaterLevelComponent.validationMessages));
   }
 
-  onSubmit (): void {
+  onSubmit(): void {
     if (!this.searchForm.valid) {
       return;
     }
@@ -102,6 +104,7 @@ export class WaterLevelComponent {
 
     // simple handling of form values:
     const params = {};
+    // do not set empty values!
     if (this.searchForm.value.days !== '') {
       params['days'] = this.searchForm.value.days;
     }
@@ -109,8 +112,7 @@ export class WaterLevelComponent {
       params['hours'] = this.searchForm.value.hours;
     }
 
-    this.router.navigate(['./',
-      params],
+    this.router.navigate(['./', params],
       // should show same page, therefore relative to current and './' as path
       { relativeTo: this.route }
     );
