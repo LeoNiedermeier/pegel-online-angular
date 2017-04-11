@@ -1,12 +1,14 @@
 import { Message, MessageType } from '../message/message';
 import { MessageService } from '../message/message.service';
-import { Component } from '@angular/core';
-
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Rx';
+;
 @Component({
   selector: 'poa-messages',
   templateUrl: './message-panel.component.html'
 })
-export class MessagePanelComponent {
+export class MessagePanelComponent implements OnDestroy {
+
 
   // Template can only access elements from the component. Access to other elements is not possible.
   // Therefore we have to add a property in order to access the enum:
@@ -15,8 +17,10 @@ export class MessagePanelComponent {
 
   public messages: Message[] = [];
 
+  private subscription: Subscription;
+
   constructor(messageService: MessageService) {
-    messageService.subscribe(m => this.addMessage(m));
+    this.subscription = messageService.subscribe(m => this.addMessage(m));
   }
 
   private addMessage(message: Message): void {
@@ -25,6 +29,9 @@ export class MessagePanelComponent {
     } else {
       this.messages.push(message);
     }
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
 

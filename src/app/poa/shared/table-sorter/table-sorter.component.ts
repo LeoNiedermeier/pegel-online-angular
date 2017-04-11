@@ -1,6 +1,7 @@
 import { PoaUtils } from '../utils';
 import { TableSorterEventService, TableSortChangeEvent } from './tabel-sorter-event.service';
-import { Component, Input, Injectable, OnInit } from '@angular/core';
+import { Component, Input, Injectable, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   selector: 'poa-table-sorter',
@@ -46,6 +47,7 @@ export class TableSorterComponent implements OnInit {
     }
   }
 
+
   switchSortOrder(): void {
     this.ascending = !this.ascending;
     this.postEvent();
@@ -57,4 +59,5 @@ export class TableSorterComponent implements OnInit {
         // the compare function to use for sorting.
         PoaUtils.withAscending(this.ascending, PoaUtils.getComparator(this.property))));
   }
+
 }

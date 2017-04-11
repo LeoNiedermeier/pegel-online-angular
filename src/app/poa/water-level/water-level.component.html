@@ -8,17 +8,17 @@
             <i class="fa fa-search" aria-hidden="true"></i>
         </span>
     </div>
-    
+
     <div class="col-11 collapse" [class.show]="faSearch" id="collapseExample">
         <form [formGroup]="searchForm" class="form-inline" (ngSubmit)="onSubmit()" novalidate>
 
             <label class="col-form-label mr-sm-4 col-1">Zeitraum</label>
-            <div class="col-2 row" [class.has-danger]="formErrors.days">
+            <div class="col-3 row" [class.has-danger]="formErrors.days">
                 <label class="col-form-label mr-sm-2 col-3" for="days">Tage</label>
                 <input type="text" class="form-control mr-sm-4 col-6" id="days" formControlName="days" maxlength="3">
             </div>
 
-            <div class="col-2 row" [class.has-danger]="formErrors.hours">
+            <div class="col-3 row" [class.has-danger]="formErrors.hours">
                 <label class="col-form-label mr-sm-2 col-5" for="hours">Stunden</label>
                 <input type="text" class="form-control col-6" id="hours" formControlName="hours">
             </div>
@@ -34,21 +34,26 @@
 </div>
 
 <div class="row" *ngIf="waterLevels">
-    <div class="col">
+    <div class="col-12">
         <table class="table  table-striped table-hover table-sm">
             <thead class="thead-default">
                 <tr>
-                    <th> <poa-table-sorter property="timestamp">Datum</poa-table-sorter></th>
+                    <th>
+                        <poa-table-sorter property="timestamp">Datum</poa-table-sorter>
+                    </th>
                     <th>Pegel (cm)</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let level of waterLevels">
+                <tr *ngFor="let level of pageElements">
                     <!-- https://angular.io/docs/ts/latest/api/common/index/DatePipe-pipe.html -->
                     <td>{{level.timestamp | date:'medium'}}</td>
                     <td>{{level.value}}
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="col-12">
+        <poa-paginator-as-view-child linesPerPage="20"></poa-paginator-as-view-child>
     </div>
 </div>

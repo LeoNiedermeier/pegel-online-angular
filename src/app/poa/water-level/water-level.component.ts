@@ -1,10 +1,12 @@
+import { PaginatorAsViewChild } from '../../shared/paginator-as-view-child/paginator-as-view-child.component';
 import { Water } from './../shared/water.model';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Params, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { TableSorterEventService } from '../shared/table-sorter/tabel-sorter-event.service';
 import { WaterLevel } from '../shared/waterlevel.model';
-import 'rxjs/add/operator/switchMap';
+import { Subject } from 'rxjs/Rx';
+import 'rxjs/add/operator/takeUntil';
 
 
 @Component({
@@ -12,7 +14,7 @@ import 'rxjs/add/operator/switchMap';
   templateUrl: './water-level.component.html',
   providers: [TableSorterEventService]
 })
-export class WaterLevelComponent {
+export class WaterLevelComponent implements OnDestroy, AfterViewInit {
   // Validation messages: ControlName : { messageKey : messageText, ....}
   private static readonly validationMessages = {
     'days': {
@@ -24,7 +26,7 @@ export class WaterLevelComponent {
   };
 
   // format: { controleName : [messages,...], ...}
-  // the fields are not really necessary, but useful for code complition
+  // the fields are not really necessary, but useful for code completion
   formErrors = { days: null, hours: null };
 
   faSearch = false;
@@ -32,7 +34,23 @@ export class WaterLevelComponent {
   searchForm: FormGroup;
 
   waterLevels: WaterLevel[] = [];
+
+  get pageElements(): WaterLevel[] {
+    if (this.paginatorComponent) {
+      return this.paginatorComponent.getPageData();
+    } else {
+      return [];
+    }
+  }
+
+
+  @ViewChild(PaginatorAsViewChild)
+  private paginatorComponent: PaginatorAsViewChild<WaterLevel>;
+
   private compareFunction: (a: any, b: any) => number;
+
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+
   static onValueChanged(form: FormGroup, formErrors: any, validationMessages: any) {
     if (!form) { return; }
 
@@ -63,25 +81,15 @@ export class WaterLevelComponent {
     };
   }
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder,
-    tableSorterEventService: TableSorterEventService) {
+    private tableSorterEventService: TableSorterEventService) {
     this.createForm();
-    // table sorting
-    tableSorterEventService.subscribe(e => {
-      this.compareFunction = e.compareFunction;
-      this.sortInputData();
-    });
-
-    this.route.data.subscribe((data: { waterLevels: WaterLevel[] }) => {
-      this.waterLevels = data.waterLevels;
-      this.sortInputData();
-    }
-    );
   }
 
   private sortInputData(): void {
     if (this.compareFunction != null) {
       this.waterLevels.sort(this.compareFunction);
     }
+    this.paginatorComponent.setData(this.waterLevels);
   }
 
   private createForm() {
@@ -90,7 +98,7 @@ export class WaterLevelComponent {
       days: ['', [WaterLevelComponent.validateNumberRange(0, 30)]],
       hours: ['', [WaterLevelComponent.validateNumberRange(0, 24)]]
     });
-    this.searchForm.valueChanges
+    this.searchForm.valueChanges.takeUntil(this.ngUnsubscribe)
       .subscribe(data => WaterLevelComponent.onValueChanged(this.searchForm, this.formErrors, WaterLevelComponent.validationMessages));
   }
 
@@ -116,5 +124,23 @@ export class WaterLevelComponent {
       // should show same page, therefore relative to current and './' as path
       { relativeTo: this.route }
     );
+  }
+
+  ngAfterViewInit(): void {
+    // table sorting
+    this.tableSorterEventService.subscribe(e => {
+      this.compareFunction = e.compareFunction;
+      this.sortInputData();
+    });
+
+    this.route.data.subscribe((data: { waterLevels: WaterLevel[] }) => {
+      this.waterLevels = data.waterLevels;
+      this.sortInputData();
+    }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.complete();
   }
 }

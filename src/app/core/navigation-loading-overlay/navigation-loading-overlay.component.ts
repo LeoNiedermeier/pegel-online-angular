@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
   selector: 'poa-navigation-loading-overlay',
@@ -12,12 +13,13 @@ import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, Naviga
                   <span class="sr-only">Loading...</span>
              </div>`,
 })
-export class NavigationLoadingOverlayComponent {
+export class NavigationLoadingOverlayComponent implements OnDestroy {
 
   loading = false;
 
   private counter = 0;
 
+  private subscription : Subscription;
   constructor(router: Router) {
     router.events.subscribe((event: Event) => {
       this.navigationInterceptor(event);
@@ -51,5 +53,8 @@ export class NavigationLoadingOverlayComponent {
       }
     }
     // the RoutesRecognized event does nothing
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

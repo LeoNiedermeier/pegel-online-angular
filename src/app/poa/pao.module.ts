@@ -1,3 +1,4 @@
+import { PaginatorAsViewChild } from '../shared/paginator-as-view-child/paginator-as-view-child.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -9,12 +10,14 @@ import { TableSorterComponent } from './shared/table-sorter/table-sorter.compone
 import { WaterLevelComponent } from './water-level/water-level.component';
 import { WatersTableComponent } from './waters-table/waters-table.component';
 
+
 @NgModule({
   declarations: [
     WatersTableComponent,
     StationsTableComponent,
     WaterLevelComponent,
     PaginatorComponent,
+    PaginatorAsViewChild,
     TableSorterComponent
   ],
   imports: [RouterModule,

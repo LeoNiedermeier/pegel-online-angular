@@ -1,47 +1,36 @@
-import { PaginationDataService } from './pagination-data.service';
-import { Component, OnInit, Injectable, OnDestroy, Input } from '@angular/core';
-import { Subject } from 'rxjs/Rx';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChange, OnChanges } from '@angular/core';
 
 @Component({
-  selector: 'poa-paginator',
-  templateUrl: './paginator.component.html'
+  selector: 'poa-paginator-as-view-child',
+  templateUrl: './paginator-as-view-child.html'
 })
-export class PaginatorComponent<T> implements OnInit, OnDestroy {
+export class PaginatorAsViewChild<T>  {
+
 
   /**
    * Can be set via "linesPerPage" attribute in element. If not, default (10) is used.
    */
   @Input() linesPerPage = 10;
 
+  private pageData: T[] = [];
+
   private _currentPage = 1;
 
   private data: T[] = [];
 
-  private readonly inputDataConsumer = new Subject<T[]>();
-
-  private readonly subListProvider = new Subject<T[]>();
-
-  constructor(private paginationService: PaginationDataService<T>) {
-  }
+  constructor() { }
 
   get currentPage(): number {
     return this._currentPage;
   }
 
-  ngOnInit() {
-    // The timing problem could be solved by a BehaviorSubject
-    this.inputDataConsumer
-      .subscribe(d => {
-        this._currentPage = 1; this.data = d; this.recalculatePages();
-      });
-    if (this.paginationService.onReady) {
-      this.paginationService.onReady(this.inputDataConsumer, this.subListProvider);
-    }
+  setData(data: T[]): void {
+    this.data = data || [];
+    this.recalculatePages();
   }
 
-  ngOnDestroy(): void {
-    this.inputDataConsumer.complete();
-    this.subListProvider.complete();
+  getPageData(): T[] {
+    return this.pageData;
   }
 
   public nextPage(): void {
@@ -79,8 +68,7 @@ export class PaginatorComponent<T> implements OnInit, OnDestroy {
   }
 
   private recalculatePages() {
-    const page = this.data.slice((this._currentPage - 1) * this.linesPerPage, this._currentPage * this.linesPerPage);
-    this.subListProvider.next(page);
+    this.pageData = this.data.slice((this._currentPage - 1) * this.linesPerPage, this._currentPage * this.linesPerPage);
   }
-
 }
+

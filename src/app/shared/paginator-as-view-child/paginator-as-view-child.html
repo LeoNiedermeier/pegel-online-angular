@@ -1,0 +1,32 @@
+<!-- https://github.com/angular/angular/issues/7294 : href="javascript:void(0);" -->
+<!--  https://v4-alpha.getbootstrap.com/components/pagination/ -->
+
+<!-- no need for pagination if we have only one page -->
+<nav aria-label="Page navigation example" *ngIf="hasMoreThanOnePage()">
+    <ul class="pagination">
+        <li class="page-item" [class.disabled]="!hasPreviousPage()">
+            <!-- role="button" make mouse cursor to a pointer -->
+            <div class="page-link" role="button" aria-label="Previous" (click)="previousPage()">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </div>
+        </li>
+        <li class="page-item" *ngIf="hasPreviousPage()">
+            <div class="page-link" role="button" (click)="gotoPage(currentPage -1 )">{{currentPage - 1}}</div>
+        </li>
+        <li class="page-item active">
+            <!-- current selected page:  not clickable -->
+            <div class="page-link">{{currentPage}}</div>
+        </li>
+        <li class="page-item" *ngIf="hasNextPage()">
+            <div class="page-link" role="button" (click)="gotoPage(currentPage + 1)">{{currentPage + 1}}</div>
+        </li>
+
+        <li class="page-item" [class.disabled]="!hasNextPage()">
+            <div class="page-link" role="button" aria-label="Next" (click)="nextPage()">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </div>
+        </li>
+    </ul>
+</nav>
