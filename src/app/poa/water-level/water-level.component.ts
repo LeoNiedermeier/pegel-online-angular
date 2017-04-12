@@ -33,9 +33,11 @@ export class WaterLevelComponent implements OnDestroy, AfterViewInit {
 
   searchForm: FormGroup;
 
+  // need all data for sorting
   waterLevels: WaterLevel[] = [];
 
   get pageElements(): WaterLevel[] {
+    // the current page elements are stored in the paginator component.
     if (this.paginatorComponent) {
       return this.paginatorComponent.getPageData();
     } else {
@@ -44,6 +46,7 @@ export class WaterLevelComponent implements OnDestroy, AfterViewInit {
   }
 
 
+  // we want to access the component directly via typescript. (not via html template)
   @ViewChild(PaginatorAsViewChild)
   private paginatorComponent: PaginatorAsViewChild<WaterLevel>;
 
@@ -127,6 +130,8 @@ export class WaterLevelComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    // due to timings we have to do the following in the ngAfterViewInit method. Will not work in constructor.
+    // -> the sortInputData method transfers data to the PaginatorAsViewChild which is not available earlier.
     // table sorting
     this.tableSorterEventService.subscribe(e => {
       this.compareFunction = e.compareFunction;

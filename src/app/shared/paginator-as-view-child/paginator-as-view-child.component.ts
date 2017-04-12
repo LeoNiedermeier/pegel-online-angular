@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, SimpleChange, OnChanges
 
 @Component({
   selector: 'poa-paginator-as-view-child',
-  templateUrl: './paginator-as-view-child.html'
+  templateUrl: './paginator-as-view-child.component.html'
 })
 export class PaginatorAsViewChild<T>  {
 
@@ -12,11 +12,14 @@ export class PaginatorAsViewChild<T>  {
    */
   @Input() linesPerPage = 10;
 
-  private pageData: T[] = [];
 
   private _currentPage = 1;
 
+  // all data: needed for calculating page data.
   private data: T[] = [];
+
+  // data of current page
+  private pageData: T[] = [];
 
   constructor() { }
 
