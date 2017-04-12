@@ -32,6 +32,7 @@ export class PoaUtils {
   }
 
   static withAscending(ascending: boolean, compareFunction: (a: any, b: any) => number): (a: any, b: any) => number {
+    // wraps the given compare function if ascending == false
     if (ascending) {
       return compareFunction;
     } else {

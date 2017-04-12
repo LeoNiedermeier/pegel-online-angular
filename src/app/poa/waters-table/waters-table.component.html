@@ -18,7 +18,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let water of data">
-                    <td class="pl-2">{{water.longname}}</td>
+                    <td class="pl-2">{{water.longname | firstLetterCapital}}</td>
                     <!-- view the stations for the water -->
                     <!-- the routerlink adds a query paramter (by {} literal) like /stations;water=abc  -->
                     <td class="pr-3">

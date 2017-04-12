@@ -9,6 +9,7 @@ import { StationsTableComponent } from './stations-table/stations-table.componen
 import { TableSorterComponent } from './shared/table-sorter/table-sorter.component';
 import { WaterLevelComponent } from './water-level/water-level.component';
 import { WatersTableComponent } from './waters-table/waters-table.component';
+import { FirstLetterCapitalPipe } from './shared/first-letter-capital.pipe';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { WatersTableComponent } from './waters-table/waters-table.component';
     WaterLevelComponent,
     PaginatorComponent,
     PaginatorAsViewChild,
-    TableSorterComponent
+    TableSorterComponent,
+    FirstLetterCapitalPipe
   ],
   imports: [RouterModule,
     BrowserModule,

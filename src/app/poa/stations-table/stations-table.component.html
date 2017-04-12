@@ -2,7 +2,7 @@
     <div class="col">
 
         <!--  center heading and add some padding top and bottom  -->
-        <h3 *ngIf="water" class="pt-5 pb-5 text-center">Messstellen für das Gewässer {{water}}</h3>
+        <h3 *ngIf="water" class="pt-5 pb-5 text-center">Messstellen für das Gewässer {{water | firstLetterCapital}}</h3>
 
         <table class="table  table-striped table-hover table-sm">
             <thead class="thead-default">
@@ -22,8 +22,8 @@
             </thead>
             <tbody>
                 <tr *ngFor="let station of data" class="row">
-                    <td class="col-sm-5">{{station.longname}}</td>
-                    <td class="col-sm-4">{{station.water.longname}}</td>
+                    <td class="col-sm-5">{{station.longname | firstLetterCapital}}</td>
+                    <td class="col-sm-4">{{station.water.longname | firstLetterCapital}}</td>
                     <td class="col-sm-2">{{station.km}}</td>
                     <td class="col-sm-1">
                         <a class="btn btn-info btn-sm pull-right" [routerLink]="['/station','level',station.shortname]">Pegel</a>

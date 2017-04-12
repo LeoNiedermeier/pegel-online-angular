@@ -23,6 +23,6 @@ export class WatersResolver extends BaseResolver<Water[]> {
 // net to know in route configuration and in the component
 export const WATERS_RESOLVER = { waters: WatersResolver };
 
-export class WatersResolverResolvedData {
+export interface WatersResolverResolvedData {
   waters: Water[];
 }
