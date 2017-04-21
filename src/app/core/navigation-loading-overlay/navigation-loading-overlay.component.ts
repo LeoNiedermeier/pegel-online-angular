@@ -19,7 +19,7 @@ export class NavigationLoadingOverlayComponent implements OnDestroy {
 
   private counter = 0;
 
-  private subscription : Subscription;
+  private subscription: Subscription;
   constructor(router: Router) {
     router.events.subscribe((event: Event) => {
       this.navigationInterceptor(event);

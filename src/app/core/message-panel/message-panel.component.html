@@ -14,6 +14,7 @@
 <!--  same with class binding: -->
 <div *ngFor="let message of messages">
     <!-- the default is a bit lengthy do formulate in the case if there are more message types -->
+    <!--  use a class binding for the different message types to show -->
     <div class="alert" [class.alert-danger]="message.type == messageType.ERROR"
                        [class.alert-info]="message.type != messageType.ERROR">
         {{message.text}}
