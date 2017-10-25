@@ -1,11 +1,11 @@
-import { PaginatorAsViewChild } from '../../shared/paginator-as-view-child/paginator-as-view-child.component';
-import { Water } from './../shared/water.model';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
-import { ActivatedRoute, NavigationExtras, Params, Router } from '@angular/router';
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { TableSorterEventService } from '../shared/table-sorter/tabel-sorter-event.service';
-import { WaterLevel } from '../shared/waterlevel.model';
-import { Subject } from 'rxjs/Rx';
+import {PaginatorAsViewChild} from '../../shared/paginator-as-view-child/paginator-as-view-child.component';
+import {Water} from './../shared/water.model';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, NgForm, ValidatorFn, Validators} from '@angular/forms';
+import {ActivatedRoute, NavigationExtras, Params, Router} from '@angular/router';
+import {Component, OnInit, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
+import {TableSorterEventService} from '../shared/table-sorter/tabel-sorter-event.service';
+import {WaterLevel} from '../shared/waterlevel.model';
+import {Subject} from 'rxjs/Rx';
 import 'rxjs/add/operator/takeUntil';
 
 
@@ -27,7 +27,7 @@ export class WaterLevelComponent implements OnDestroy, AfterViewInit {
 
   // format: { controleName : [messages,...], ...}
   // the fields are not really necessary, but useful for code completion
-  formErrors = { days: null, hours: null };
+  formErrors = {days: null, hours: null};
 
   faSearch = false;
 
@@ -52,10 +52,10 @@ export class WaterLevelComponent implements OnDestroy, AfterViewInit {
 
   private compareFunction: (a: any, b: any) => number;
 
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private ngUnsubscribe: Subject<any> = new Subject<any>();
 
   static onValueChanged(form: FormGroup, formErrors: any, validationMessages: any) {
-    if (!form) { return; }
+    if (!form) {return;}
 
     // check only fields which have a validation message
     for (const field of Object.keys(validationMessages)) {
@@ -78,9 +78,9 @@ export class WaterLevelComponent implements OnDestroy, AfterViewInit {
 
   // example of custom validator:
   static validateNumberRange(min: number, max: number): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } => {
+    return (control: AbstractControl): {[key: string]: any} => {
       const n = parseFloat(control.value);
-      return (control.value === '' || !isNaN(n) && n >= min && n <= max) ? null : { 'numberFormat': { n } };
+      return (control.value === '' || !isNaN(n) && n >= min && n <= max) ? null : {'numberFormat': {n}};
     };
   }
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder,
@@ -125,7 +125,7 @@ export class WaterLevelComponent implements OnDestroy, AfterViewInit {
 
     this.router.navigate(['./', params],
       // should show same page, therefore relative to current and './' as path
-      { relativeTo: this.route }
+      {relativeTo: this.route}
     );
   }
 
@@ -133,16 +133,20 @@ export class WaterLevelComponent implements OnDestroy, AfterViewInit {
     // due to timings we have to do the following in the ngAfterViewInit method. Will not work in constructor.
     // -> the sortInputData method transfers data to the PaginatorAsViewChild which is not available earlier.
     // table sorting
-    this.tableSorterEventService.subscribe(e => {
-      this.compareFunction = e.compareFunction;
-      this.sortInputData();
-    });
+    // https://blog.angularindepth.com/everything-you-need-to-know-about-the-expressionchangedafterithasbeencheckederror-error-e3fd9ce7dbb4
+    // section Asynchronous update
+    setTimeout(() => {
+      this.tableSorterEventService.subscribe(e => {
+        this.compareFunction = e.compareFunction;
+        this.sortInputData();
+      });
 
-    this.route.data.subscribe((data: { waterLevels: WaterLevel[] }) => {
-      this.waterLevels = data.waterLevels;
-      this.sortInputData();
-    }
-    );
+      this.route.data.subscribe((data: {waterLevels: WaterLevel[]}) => {
+        this.waterLevels = data.waterLevels;
+        this.sortInputData();
+      }
+      );
+    });
   }
 
   ngOnDestroy(): void {
